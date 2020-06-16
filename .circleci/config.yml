@@ -9,8 +9,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          command: docker-compose up -d
+
   server_test:
     executor:
       name: node/default
@@ -24,6 +23,7 @@ jobs:
       - run:
           command: npm test
           working_directory: ./server
+
   client_test:
     executor:
       name: node/default
@@ -35,6 +35,25 @@ jobs:
       - run:
           command: npm test
           working_directory: ./client
+  docker_image_build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
+            sudo docker build ./db -t radek467/cicd:database_image
+            sudo docker push radek467/cicd:database_image
+      - run:
+          command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
+            sudo docker build ./server -t radek467/cicd:server_image
+            sudo docker push radek467/cicd:server_image
+      - run:
+          command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
+            sudo docker build ./client -t radek467/cicd:client_image
+            sudo docker push radek467/cicd:client_image
 workflows:
   build-and-test:
     jobs:
@@ -57,3 +76,7 @@ workflows:
                 - master
           requires:
             - build
+      - docker_image_build:
+          requires:
+            - server_test
+            - client_test
