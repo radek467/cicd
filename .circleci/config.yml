@@ -8,6 +8,9 @@ jobs:
       name: node/default
     steps:
       - checkout
+      - setup_remote_docker
+      - run:
+          command: docker-compose up -d
   server_test:
     executor:
       name: node/default
