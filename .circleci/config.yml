@@ -32,7 +32,28 @@ jobs:
       - run:
           command: npm test
           working_directory: ./client
-workflows:
+workworkflows:
+  build-and-test:
+    jobs:
+      - build:
+        filters:
+          branches:
+            only:
+              - master
+      - server_test:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build
+      - client_test:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - buildflows:
   build-and-test:
     jobs:
       - build
