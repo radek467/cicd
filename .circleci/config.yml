@@ -41,17 +41,17 @@ jobs:
       - run:
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
-            sudo docker build ./db -t radek467/cicd:database_image
+            sudo docker build ./db -t radekk467/cicd:database_image
             sudo docker push radekk467/cicd:database_image
       - run:
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
-            sudo docker build ./server -t radek467/cicd:server_image
+            sudo docker build ./server -t radekk467/cicd:server_image
             sudo docker push radekk467/cicd:server_image
       - run:
           command: |
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
-            sudo docker build ./client -t radek467/cicd:client_image
+            sudo docker build ./client -t radekk467/cicd:client_image
             sudo docker push radekk467/cicd:client_image
 workflows:
   build-and-test:
