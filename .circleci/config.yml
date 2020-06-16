@@ -53,13 +53,4 @@ workflows:
               only:
                 - master
           requires:
-            - buildflows:
-  build-and-test:
-    jobs:
-      - build
-      - server_test:
-          requires:
-            - build
-      - client_test:
-          requires:
             - build
