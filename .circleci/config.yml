@@ -1,8 +1,8 @@
 version: 2.1
 orbs:
-  node: circleci/node@3.0.0
+  node: circleci/node@2.1.0
 jobs:
-  build-and-test-client:
+  build-and-test:
     executor:
       name: node/default
     steps:
@@ -24,6 +24,6 @@ jobs:
           command: npm test
           working_directory: ./client
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test:
+    jobs:
+      - build-and-test
