@@ -1,0 +1,59 @@
+version: 2.1
+orbs:
+  node: circleci/node@2.1.0
+jobs:
+  build-and-test:
+  build:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: docker-compose up -d
+  server_test:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: ./server
+      - run:
+          command: npm install
+          working_directory: ./server
+      - run:
+          command: npm test
+          working_directory: ./server
+  client_test:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - run:
+          command: npm install
+          working_directory: ./client
+      - run:
+          command: npm test
+          working_directory: ./client
+workflows:
+  build-and-test:
+    jobs:
+      - build:
+        filters:
+          branches:
+            only:
+              - master
+      - server_test:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build
+      - client_test:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build
