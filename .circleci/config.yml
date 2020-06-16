@@ -23,7 +23,6 @@ jobs:
       - run:
           command: npm test
           working_directory: ./server
-
   client_test:
     executor:
       name: node/default
